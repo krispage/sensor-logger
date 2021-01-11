@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Dashboard {% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 col-12 order-2 order-lg-1">
+        <h2 class="mt-4">Devices:</h2>
+    </div>
+    <div class="col-lg-6 col-12 mt-4 order-1 order-lg-2">
+        <a href="{{ url_for('ui.register_device') }}" type="button" class="btn btn-primary">Register Device</a>
+    </div>
+</div>
+<div>
+    <div class="row">
+        {% for device in devices %}
+            <div class="col-lg-6 col-12 order-2 order-lg-1">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title font-weight-bold">
+                            <a href="{{ url_for('ui.device_details', device_id=device['id']) }}">
+                                <p class="font-weight-bold">{{ device['id'] }}</p>
+                            </a>
+                        </div>
+                        <div class="card-text">
+                            <a>Last data received: </a>
+                            <a>{{ last_data[device['id']]['time'] }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

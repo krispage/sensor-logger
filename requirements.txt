@@ -1,0 +1,11 @@
+Flask
+Flask-PyMongo
+Flask-MySQLdb
+Jinja2
+MarkupSafe
+Werkzeug
+click
+itsdangerous
+mysqlclient
+passlib
+python-dotenv

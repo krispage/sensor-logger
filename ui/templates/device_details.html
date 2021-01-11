@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %} dashboard {% endblock %}
+{% block content %}
+<!-- Reset Key Modal -->
+<div class="modal" id="confirmReset"><div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">Reset Secret Key</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">Are you sure you want to Reset the secret key?
+        This cannot be reverted. You will have to update the device</div>
+    <div class="modal-footer">
+        <a type="button" class="btn btn-warning" href="{{ url_for('ui.device_reset_key', device_id=identifier) }}">Reset</a>
+        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+    </div>
+   </div>
+  </div>
+</div>
+<!-- Delete Device Modal -->
+<div class="modal" id="confirmDelete"><div class="modal-dialog"><div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Device</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">Are you sure you want to this device?
+          This won't remove collected data, but it will make it unaccessable</div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-danger" href="{{ url_for('ui.device_delete', device_id=identifier) }}">Reset</a>
+        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-12">
+        <h2 class="mt-4 mb-4">Device: {{ identifier }}</h2>
+    </div>
+    <div class="col-lg-4 col-12">
+        <button type="button" class="btn btn-warning mt-4 mb-4" data-toggle="modal" data-target="#confirmReset">Reset Secret Key</button>
+    </div>
+    <div class="col-lg-4 col-12">
+        <button type="button" class="btn btn-danger mt-4 mb-4" data-toggle="modal" data-target="#confirmDelete">Delete Device</button>
+    </div>
+</div>
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="card-title"> identifier: {{identifier}}</div>
+        <div class="card-text"> secret key: {{secret_key['secret_key']}}</div>
+    </div>
+</div>
+<div>
+    <h4>Last 5 data entries</h4>
+    <div class="row">
+        {% for data in device %}
+        <div class="col-lg-6 col-12 order-2 order-lg-1">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title font-weight-bold"> {{data['time']}} : </div>
+                    <div class="card-text">
+                        {% if data['data'] is not none %}
+                        {% for key in data['data'] %}
+                        <a>{{ key }}: {{data['data'][key] }}</a></br>
+                        {% endfor %}
+                        {% else %}
+                        <a>Empty packet</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

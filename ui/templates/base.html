@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="{{ url_for('ui.static', filename='jquery-3.3.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('ui.static', filename='bootstrap.min.js') }}"></script>
+
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('ui.static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('ui.static', filename='style.css') }}">
+
+      {% block extra_scripts %} {% endblock %}
+    <title>{% block title %} {% endblock %}</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark navtop">
+      <div class="container">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+                {% if session['loggedin'] == True %}
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="{{ url_for('ui.dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url_for('ui.register_device') }}">Register Device</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="mx-auto order-0">
+            <a class="navbar-brand mx-auto text-white" href="{{ url_for('ui.dashboard') }}">Sensor Monitor</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                {% if session['loggedin'] == True %}
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="{{ url_for('ui.logout') }}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link text-white" href="{{ url_for('ui.login') }}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+                <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+        {% block content %} {% endblock %}
+    </div>
+
+  </body>
+</html>
