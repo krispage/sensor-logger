@@ -61,16 +61,27 @@ export FLASK_APP=main; flask run
 ## Run in Docker
 
 ### build
+```
 docker build . -t krispage/sensor-logger:latest
+```
 
 ### Docker run
+```
 sudo docker run -p 5000:5000 krispage/sensor-logger:latest
+```
 
 ## Docker compose
+```
 docker-compose --env-file compose.env up 
+```
 
 # Add user
 ## Running locally
+```
 flask cmd create_user admin blabla
+```
+
 ## Docker
+```
 docker exec -i \<CONTAINER ID> /bin/sh -c "export FLASK_APP=/etc/flask/src/flask_app/main; flask cmd create_user \<my user> \<mypass>"
+```
