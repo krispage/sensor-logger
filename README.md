@@ -4,6 +4,7 @@
 - [x] User based authentication for UI
 - [ ] Admin type user with user management in UI
 - [ ] Read-only keys for retrieving data
+  - [ ] Way to connect to dashboards such as Grafana via API instead of DB backend
 
 
 
