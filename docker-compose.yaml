@@ -13,12 +13,12 @@ services:
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
 
   app:
-    image: docker.starground.co.uk/flask-sensor-api:latest
+    image: krispage/sensor-logger:latest
     depends_on:
       - "db"
     restart: always
     ports:
-      - 8000:5000
+      - 5000:5000
     environment:
       DEBUG:          "${DEBUG}"
       FLASK_ENV:      "${FLASK_ENV}"
