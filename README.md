@@ -85,3 +85,10 @@ flask cmd create_user admin blabla
 ```
 docker exec -i \<CONTAINER ID> /bin/sh -c "export FLASK_APP=/etc/flask/src/flask_app/main; flask cmd create_user \<my user> \<mypass>"
 ```
+
+# Demo creating a user
+[![Sensor Logger Add User](https://img.youtube.com/vi/Zq2n7a_IO4c/0.jpg)](https://www.youtube.com/watch?v=Zq2n7a_IO4c)
+
+
+# Demo adding device and logging data
+[![Sensor Logger Usage Demo](https://img.youtube.com/vi/23sCRkLPcfU/0.jpg)](https://www.youtube.com/watch?v=23sCRkLPcfU)
