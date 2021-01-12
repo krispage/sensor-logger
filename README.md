@@ -7,6 +7,7 @@
 
 
 
+
 # Getting Started
 ## Environment Variables
 The Flask app needs environment variables in order to run
@@ -20,6 +21,7 @@ In docker this can be passed in using the env file parameter
 ```
 --env-file my.env
 ```
+
 
 ### .env example
 ```bash
@@ -39,6 +41,7 @@ MYSQL_DB=sensors-logger
 git clone https://github.com/krispage/sensor-logger.git
 cd sensor-logger
 ```
+
 ### Install dependencies
 #### Using virtualenv for dependencies
 Requires python virtualenv https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
@@ -83,7 +86,7 @@ flask cmd create_user admin blabla
 
 ## Docker
 ```
-docker exec -i \<CONTAINER ID> /bin/sh -c "export FLASK_APP=/etc/flask/src/flask_app/main; flask cmd create_user \<my user> \<mypass>"
+docker exec -i <CONTAINER ID> /bin/sh -c "export FLASK_APP=/etc/flask/src/flask_app/main; flask cmd create_user <my user> <mypass>"
 ```
 
 # Demo creating a user
