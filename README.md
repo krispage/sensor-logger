@@ -1,4 +1,11 @@
 
+# TODO
+- [x] API key authentication per device
+- [x] User based authentication for UI
+- [ ] Admin type user with user management in UI
+- [ ] Read-only keys for retrieving data
+
+
 
 # Getting Started
 ## Environment Variables
@@ -58,6 +65,9 @@ docker build . -t krispage/sensor-logger:latest
 
 ### Docker run
 sudo docker run -p 5000:5000 krispage/sensor-logger:latest
+
+## Docker compose
+docker-compose --env-file compose.env up 
 
 # Add user
 ## Running locally
