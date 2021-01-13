@@ -13,9 +13,37 @@ def favicon():
     return redirect(url_for('static', filename='favicon.ico'))
 
 
-@web_ui.route('/dashboard')
+@web_ui.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if 'loggedin' in session:
+        if request.method == 'POST':
+            if 'device_form' in request.form:
+                #for later
+                pass
+            if 'api_key_form' in request.form:
+                print("it's api key form")
+                identifier = request.form['identifier']
+
+                exists = None
+                if not identifier:
+                    flash('An identifier is required')
+                else:
+                    try:
+                        secret_key = pwd.genword(entropy=56, charset='hex', length=32)
+                        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                        cursor.execute('SELECT id FROM api_keys WHERE api_key = %s', (identifier,))
+                        exists = cursor.fetchone()
+                        if exists:
+                            msg = 'A key with that name already exists'
+                        else:
+                            cursor.execute('INSERT INTO api_keys (name, api_key) VALUES (%s, %s)',
+                                           (identifier, secret_key))
+                            mysql.connection.commit()
+                    finally:
+                        cursor.close()
+
+
+            print(request.form)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT identifier as id FROM devices')
         devices = cursor.fetchall()
@@ -25,7 +53,10 @@ def dashboard():
                            (device['id'],))
             last_data[device['id']] = cursor.fetchone()
 
-        return render_template('dashboard.html', devices=devices, last_data=last_data)
+        cursor.execute('SELECT id, name, api_key FROM api_keys')
+        api_keys = cursor.fetchall()
+
+        return render_template('dashboard.html', devices=devices, api_keys=api_keys, last_data=last_data)
 
     return redirect(url_for('ui.login', r=url_for('ui.dashboard')))
 
