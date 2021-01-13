@@ -47,6 +47,14 @@ def data():
             cursor.execute('INSERT INTO data (device, time, data) VALUES (%s, %s, %s)',
                            (identifier, time, json.dumps(request_data)))
             mysql.connection.commit()
+            for field in request_data:
+                try:
+                    cursor.execute('INSERT INTO data_fields(device_id, field) '
+                                   'VALUES((SELECT id FROM devices WHERE identifier = %s),%s)', (identifier, field))
+                    mysql.connection.commit()
+                except:
+                    pass
+
         finally:
             cursor.close()
 
@@ -74,3 +82,5 @@ def device_data(device_id):
     request_data = cursor.fetchall()
 
     return jsonify(request_data, 200)
+
+

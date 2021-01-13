@@ -9,16 +9,37 @@ CREATE TABLE `users` (
 );
 
 CREATE TABLE `devices` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `identifier` text NOT NULL,
-  `secret_key` text NOT NULL,
+  `id` int  NOT NULL AUTO_INCREMENT,
+  `identifier`  varchar(32) NOT NULL,
+  `secret_key`  varchar(32)  NOT NULL,
+  `data_fields` JSON,
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `api_keys` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL,
+  `api_key` varchar(32) NOT NULL,
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE `data` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `device` text DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `device` varchar(32) NOT NULL,
   `time` datetime NOT NULL,
   `data` JSON,
   PRIMARY KEY (`id`)
+);
+
+CREATE INDEX data_index on data (
+    `id`, `device`, `time`
+);
+
+CREATE TABLE `data_fields` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `device_id` int,
+  `field` text NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (device_id) REFERENCES devices(id),
+  UNIQUE(device_id, field(32))
 );
