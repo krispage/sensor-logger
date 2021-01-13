@@ -10,10 +10,10 @@
  spec:
    tls:
      - hosts:
-       - sensor-logger.kriz.co.uk
+       - <domain.example.com>
        secretName: ssl-cert
    rules:
-   - host: sensor-logger.kriz.co.uk
+   - host: <domain.example.com>
      http:
        paths:
        - path: /
