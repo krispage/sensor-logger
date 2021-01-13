@@ -25,3 +25,23 @@ def authenticate(request, identifier=None):
         return False, {"msg": "Bad username or password"}
 
     return True, {"msg": "success"}
+
+def authenticate_api_key(request):
+    if not request.is_json:
+        return False, {"msg": "Missing JSON in request"}
+
+    secret_key = request.headers.get('Authorization', None)
+    if not secret_key:
+        return False, {"msg": "Missing Authorization parameter"}
+    else:
+        if not secret_key.startswith("Bearer "):
+            return False, {"msg": "Authorization must contain Bearer "}
+        secret_key = secret_key[7:]
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM api_keys WHERE api_key = %s', (secret_key,))
+    authenticated = cursor.fetchone()
+    if authenticated is None:
+        return False, {"msg": "Bad key"}
+
+    return True, {"msg": "success"}

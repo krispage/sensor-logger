@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 from core.core import core
 from ui.ui import web_ui
+from grafana import grafana
 from commands import cmd
 from database import mysql
 
@@ -19,6 +20,7 @@ mysql.init_app(app)
 
 app.register_blueprint(core)
 app.register_blueprint(web_ui)
+app.register_blueprint(grafana)
 app.register_blueprint(cmd)
 
 
