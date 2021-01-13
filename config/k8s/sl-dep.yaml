@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sl-dep
+  namespace: sensor-logger
+  labels:
+    app: sl-dep
+    zone: prod
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sl-dep
+  template:
+    metadata:
+      labels:
+        app: sl-dep
+    spec:
+      containers:
+      - name: sl-dep
+        image: krispage/sensor-logger:latest
+        ports:
+        - containerPort: 5000
+        envFrom:
+          - configMapRef:
+              name: sl-configmap

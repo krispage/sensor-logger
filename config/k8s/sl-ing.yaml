@@ -1,0 +1,23 @@
+---
+ apiVersion: networking.k8s.io/v1beta1
+ kind: Ingress
+ metadata:
+   name: sl-ingress
+   namespace: sensor-logger
+   annotations:
+     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+     kubernetes.io/ingress.class: nginx
+ spec:
+   tls:
+     - hosts:
+       - sensor-logger.kriz.co.uk
+       secretName: ssl-cert
+   rules:
+   - host: sensor-logger.kriz.co.uk
+     http:
+       paths:
+       - path: /
+         backend:
+           serviceName: sl-svc
+           servicePort: 80
+ 
