@@ -40,7 +40,10 @@ def data():
 
         identifier = request.json.get('identifier', None)
         request_data = request.json['data']
+
         time = datetime.datetime.now()
+        if 'time' in request.json:
+            time = request.json['time']
 
         try:
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
