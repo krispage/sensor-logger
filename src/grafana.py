@@ -65,7 +65,8 @@ def query(device_id):
         for point in response_data:
             data = json.loads(point.get('data'))
             if target.get('target') in data:
-                datapoints.append([float(data.get(target.get('target'))), int(point.get('time').timestamp() * 1000)])
+                if (data.get(target.get('target')) != ""):
+                    datapoints.append([float(data.get(target.get('target'))), int(point.get('time').timestamp() * 1000)])
 
         target_response['datapoints'] = datapoints
         response.append(target_response)
