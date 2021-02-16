@@ -41,9 +41,8 @@ def dashboard():
                             mysql.connection.commit()
                     finally:
                         cursor.close()
-
-
             print(request.form)
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT identifier as id FROM devices')
         devices = cursor.fetchall()
@@ -149,6 +148,41 @@ def device_delete(device_id):
 
     return redirect(url_for('ui.dashboard', device_id=device_id))
 
+@web_ui.route('/api_key/<key_id>/reset')
+def api_key_reset(key_id):
+    if 'loggedin' not in session:
+        return redirect(url_for('ui.login', r=url_for('ui.dashboard')))
+
+    try:
+        secret_key = pwd.genword(entropy=56, charset='hex', length=32)
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT id from api_keys WHERE name = %s', (key_id,))
+        exists = cursor.fetchone()
+        if exists:
+            cursor.execute('UPDATE api_keys set api_key = %s WHERE id = %s', (secret_key, exists['id']))
+            mysql.connection.commit()
+    finally:
+        cursor.close()
+
+    return redirect(url_for('ui.dashboard'))
+
+
+@web_ui.route('/api_key/<key_id>/delete')
+def api_key_delete(key_id):
+    if 'loggedin' not in session:
+        return redirect(url_for('ui.login', r=url_for('ui.dashboard')))
+
+    try:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT id from api_keys WHERE name = %s', (key_id,))
+        exists = cursor.fetchone()
+        if exists:
+            cursor.execute('DELETE FROM api_keys WHERE id = %s', (exists['id'],))
+            mysql.connection.commit()
+    finally:
+        cursor.close()
+
+    return redirect(url_for('ui.dashboard'))
 
 @web_ui.route('/login', methods=['GET', 'POST'])
 def login(msg=''):
