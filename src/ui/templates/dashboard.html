@@ -2,16 +2,25 @@
 {% block title %} Dashboard {% endblock %}
 {% block extra_scripts %}
 <script>
-$(document).ready(
-    function(){
-        $("#reveal_api_keys").click(function () {
-            $(".api_key_secret").toggle();
-        });
+$(document).on("click",".btn_show_api_keys", function () {
+   $(this).parent().parent().parent().find('.api_key_secret').toggle();
+   alert('you clicked on button #' + clickedBtnID);
+});
 
-    });
+$(document).on('show.bs.modal', '#confirmReset', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var modal = $(this)
+  modal.find('.confirm').attr("href", button.data('id'))
+})
+$(document).on('show.bs.modal', '#confirmDelete', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var modal = $(this)
+  modal.find('.confirm').attr("href", button.data('id'))
+})
 </script>
 {% endblock %}
 {% block content %}
+
 <div class="row">
     <div class="col-lg-6 col-12 order-2 order-lg-1">
         <h2 class="mt-4">Devices:</h2>
@@ -43,7 +52,6 @@ $(document).ready(
 <div class="row mt-lg-4 mt-2">
     <div class="col-lg-6 col-12 order-2 order-lg-1">
         <h2 class="">API Keys:</h2>
-        <button  class="btn btn-primary" id="reveal_api_keys">Reveal</button>
     </div>
     <div class="col-lg-6 col-12 order-2 order-lg-1">
     <form method="post">
@@ -64,13 +72,26 @@ $(document).ready(
     <div class="row">
         {% for api_key in api_keys %}
             <div class="col-lg-6 col-12 order-2 order-lg-1">
-                <div class="card">
+                <div class="card mb-1">
                     <div class="card-body">
-                        <div class="card-title font-weight-bold">
-                            <p class="font-weight-bold">{{ api_key['name'] }}</p>
-                        </div>
-                        <div class="card-text">
-                            <p class="api_key_secret">{{ api_key['api_key'] }}</p>
+                        <div class="row">
+                            <div class="col-6 card-title font-weight-bold">
+                                <p class="font-weight-bold">{{ api_key['name'] }}</p>
+                            </div>
+                            <div class="row col-6">
+                                <div class="col-4">
+                                    <button  class="btn btn-primary btn_show_api_keys">Show</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-id="{{ url_for('ui.api_key_reset', key_id=api_key['name']) }}" data-target="#confirmReset">Reset</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-id="{{ url_for('ui.api_key_delete', key_id=api_key['name']) }}" data-target="#confirmDelete">Delete</button>
+                                </div>
+                            </div>
+                            <div class="col-12 card-text">
+                                <p class="api_key_secret">{{ api_key['api_key'] }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,4 +99,37 @@ $(document).ready(
         {% endfor %}
     </div>
 </div>
+
+<!-- Reset API Key Modal -->
+<div class="modal" id="confirmReset"><div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">Reset Secret Key</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">Are you sure you want to Reset the api key?
+        This cannot be reverted. You will have to update the key in the application</div>
+    <div class="modal-footer">
+        <a type="button" class="btn btn-warning confirm" href="">Reset</a>
+        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+    </div>
+   </div>
+  </div>
+</div>
+<!-- Delete API Key Modal -->
+<div class="modal" id="confirmDelete"><div class="modal-dialog"><div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Device</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">Are you sure you want to this device?
+          This can't be undone.</div>
+      <div class="modal-footer">
+        <a type="button" class="btn btn-danger confirm" href="">Delete</a>
+        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 {% endblock %}
