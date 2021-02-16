@@ -137,9 +137,10 @@ def device_delete(device_id):
 
     try:
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT identifier from devices where identifier = %s', (device_id,))
+        cursor.execute('SELECT id from devices where identifier = %s', (device_id,))
         exists = cursor.fetchone()
         if exists:
+            cursor.execute('DELETE FROM data_fields WHERE device_id = %s', (exists['id'],))
             cursor.execute('DELETE FROM devices WHERE identifier = %s', (device_id,))
             mysql.connection.commit()
     finally:

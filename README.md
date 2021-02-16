@@ -2,11 +2,12 @@
 # TODO
 - [x] API key authentication per device
 - [x] User based authentication for UI
-- [ ] Admin type user with user management in UI
-- [x] Read-only keys for retrieving data
+- [ ] Read-only keys for retrieving data
   - [x] Way to connect to dashboards such as Grafana via API instead of DB backend
+  - [x] Ability to Remove/Reset api keys
   - [ ] Docker compose to include Grafana
 - [ ] Docker compose nginx for HTTPS support
+- [ ] Admin user with user management in UI
 
 
 
@@ -91,6 +92,10 @@ flask cmd create_user admin blabla
 ```
 docker exec -i <CONTAINER ID> /bin/sh -c "export FLASK_APP=/etc/flask/src/flask_app/main; flask cmd create_user <my user> <mypass>"
 ```
+
+
+# Example scripts for logging data
+<https://github.com/krispage/sensor-logger-devices>
 
 # Demo creating a user
 [![Sensor Logger Add User](https://img.youtube.com/vi/Zq2n7a_IO4c/0.jpg)](https://www.youtube.com/watch?v=Zq2n7a_IO4c)
